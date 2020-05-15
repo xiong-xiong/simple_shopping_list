@@ -15,3 +15,13 @@ samples, guidance on mobile development, and a full API reference.
 ## create new app
 
 `flutter create`
+
+## To deploy follow these steps
+
+https://flutter.dev/docs/development/ios-project-migration
+
+after these
+
+- go to Runner > signing and capabilities and select a team for signing
+- connect device and choose it
+- press play button to deploy to device

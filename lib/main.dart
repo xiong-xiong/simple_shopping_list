@@ -99,7 +99,7 @@ class _HomeState extends State<Home> {
             ),
           ),
           SizedBox(
-            height: 600,
+            height: 500,
             child: ListView.builder(
               itemCount: _listItems.length,
               itemBuilder: (context, index) {

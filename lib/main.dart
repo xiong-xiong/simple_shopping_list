@@ -30,6 +30,13 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   List _listItems = [];
 
+  void _resetlistItems() {
+    setState(() {
+      _listItems = [];
+      formController.text = "";
+    });
+  }
+
   void _addlistItems() {
     setState(() {
       _listItems.add(formController.text);
@@ -65,11 +72,33 @@ class _HomeState extends State<Home> {
           Padding(
               padding: const EdgeInsets.all(14.0),
               child: TextFormField(
+                style: TextStyle(
+                  fontWeight: FontWeight.normal,
+                  fontSize: 22,
+                ),
                 controller: formController,
                 onFieldSubmitted: _submitlistItems,
               )),
+          RaisedButton(
+            onPressed: _addlistItems,
+            textColor: Colors.white,
+            padding: const EdgeInsets.all(0.0),
+            child: Container(
+              padding: const EdgeInsets.all(10.0),
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  colors: <Color>[
+                    Colors.blueGrey,
+                    Colors.blueGrey,
+                  ],
+                ),
+              ),
+              child: const Text('Add item to list',
+                  style: TextStyle(fontSize: 20)),
+            ),
+          ),
           SizedBox(
-            height: 400,
+            height: 600,
             child: ListView.builder(
               itemCount: _listItems.length,
               itemBuilder: (context, index) {
@@ -78,7 +107,25 @@ class _HomeState extends State<Home> {
                   key: ObjectKey(_listItems[index]),
                   child: Container(
                     padding: EdgeInsets.all(20.0),
-                    child: Text(_listItems[index]),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          color: Colors.black12,
+                          width: 1.0,
+                        ),
+                      ),
+                    ),
+                    child: Row(
+                      children: <Widget>[
+                        Text(
+                          _listItems[index],
+                          style: TextStyle(
+                            fontWeight: FontWeight.normal,
+                            fontSize: 22,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   onDismissed: (direction) {
                     var item = _listItems.elementAt(index);
@@ -102,9 +149,9 @@ class _HomeState extends State<Home> {
       ),
 
       floatingActionButton: FloatingActionButton(
-        onPressed: _addlistItems,
-        tooltip: 'Add item',
-        child: Icon(Icons.add),
+        onPressed: _resetlistItems,
+        tooltip: 'Reset',
+        child: Icon(Icons.delete_sweep),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }

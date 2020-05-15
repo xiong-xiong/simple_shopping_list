@@ -8,9 +8,10 @@ samples, guidance on mobile development, and a full API reference.
 
 ## Run local dev
 
-open -a Simulator
-flutter run
+'''open -a Simulator'''
+
+'''flutter run'''
 
 ## create new app
 
-flutter create
+'''flutter create'''

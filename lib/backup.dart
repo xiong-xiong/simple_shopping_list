@@ -62,13 +62,33 @@ class _HomeState extends State<Home> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
+          ...(_listItems as List<dynamic>).map((item) {
+            var i = _listItems.indexOf(item);
+            return GestureDetector(
+              onTap: () {
+                setState(() {
+                  _listItems.remove(item);
+                });
+              },
+              onPanUpdate: (details) {
+                if (details.delta.dx > 0) {
+                  setState(() {
+                    _listItems.remove(item);
+                  });
+                }
+              },
+              child: Text(
+                item,
+                style: Theme.of(context).textTheme.display1,
+              ),
+            );
+          }).toList(),
           TextFormField(
             // The validator receives the text that the user has entered.
             controller: formController,
             onFieldSubmitted: _submitlistItems,
           ),
-          SizedBox(
-            height: 200,
+          Container(
             child: ListView.builder(
               itemCount: _listItems.length,
               itemBuilder: (context, index) {

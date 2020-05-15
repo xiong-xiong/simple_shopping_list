@@ -62,40 +62,31 @@ class _HomeState extends State<Home> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
+          ...(_listItems as List<dynamic>).map((item) {
+            var i = _listItems.indexOf(item);
+            return GestureDetector(
+              onTap: () {
+                setState(() {
+                  _listItems.remove(item);
+                });
+              },
+              onPanUpdate: (details) {
+                if (details.delta.dx > 0) {
+                  setState(() {
+                    _listItems.remove(item);
+                  });
+                }
+              },
+              child: Text(
+                item,
+                style: Theme.of(context).textTheme.display1,
+              ),
+            );
+          }).toList(),
           TextFormField(
             // The validator receives the text that the user has entered.
             controller: formController,
             onFieldSubmitted: _submitlistItems,
-          ),
-          SizedBox(
-            height: 200,
-            child: ListView.builder(
-              itemCount: _listItems.length,
-              itemBuilder: (context, index) {
-                return Dismissible(
-                  background: stackBehindDismiss(),
-                  key: ObjectKey(_listItems[index]),
-                  child: Container(
-                    padding: EdgeInsets.all(20.0),
-                    child: Text(_listItems[index]),
-                  ),
-                  onDismissed: (direction) {
-                    var item = _listItems.elementAt(index);
-                    //To delete
-                    deleteItem(index);
-                    //To show a snackbar with the UNDO button
-                    Scaffold.of(context).showSnackBar(SnackBar(
-                        content: Text("Item deleted"),
-                        action: SnackBarAction(
-                            label: "UNDO",
-                            onPressed: () {
-                              //To undo deletion
-                              undoDeletion(index, item);
-                            })));
-                  },
-                );
-              },
-            ),
           ),
         ],
       ),

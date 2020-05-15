@@ -62,13 +62,14 @@ class _HomeState extends State<Home> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          TextFormField(
-            // The validator receives the text that the user has entered.
-            controller: formController,
-            onFieldSubmitted: _submitlistItems,
-          ),
+          Padding(
+              padding: const EdgeInsets.all(14.0),
+              child: TextFormField(
+                controller: formController,
+                onFieldSubmitted: _submitlistItems,
+              )),
           SizedBox(
-            height: 200,
+            height: 400,
             child: ListView.builder(
               itemCount: _listItems.length,
               itemBuilder: (context, index) {

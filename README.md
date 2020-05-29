@@ -22,6 +22,6 @@ https://flutter.dev/docs/development/ios-project-migration
 
 after these
 
-- go to Runner > signing and capabilities and select a team for signing
+- go to xcode Runner > signing and capabilities and select a team for signing
 - connect device and choose it
 - press play button to deploy to device

@@ -7,6 +7,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         // This is the theme of your application.
@@ -29,6 +30,13 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   List _listItems = [];
+
+  void _resetlistItems() {
+    setState(() {
+      _listItems = [];
+      formController.text = "";
+    });
+  }
 
   void _addlistItems() {
     setState(() {
@@ -62,39 +70,89 @@ class _HomeState extends State<Home> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          ...(_listItems as List<dynamic>).map((item) {
-            var i = _listItems.indexOf(item);
-            return GestureDetector(
-              onTap: () {
-                setState(() {
-                  _listItems.remove(item);
-                });
-              },
-              onPanUpdate: (details) {
-                if (details.delta.dx > 0) {
-                  setState(() {
-                    _listItems.remove(item);
-                  });
-                }
-              },
-              child: Text(
-                item,
-                style: Theme.of(context).textTheme.display1,
+          Padding(
+              padding: const EdgeInsets.all(14.0),
+              child: TextFormField(
+                style: TextStyle(
+                  fontWeight: FontWeight.normal,
+                  fontSize: 22,
+                ),
+                controller: formController,
+                onFieldSubmitted: _submitlistItems,
+              )),
+          RaisedButton(
+            onPressed: _addlistItems,
+            textColor: Colors.white,
+            padding: const EdgeInsets.all(0.0),
+            child: Container(
+              padding: const EdgeInsets.all(10.0),
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  colors: <Color>[
+                    Colors.blueGrey,
+                    Colors.blueGrey,
+                  ],
+                ),
               ),
-            );
-          }).toList(),
-          TextFormField(
-            // The validator receives the text that the user has entered.
-            controller: formController,
-            onFieldSubmitted: _submitlistItems,
+              child: const Text('Add items to list',
+                  style: TextStyle(fontSize: 20)),
+            ),
+          ),
+          SizedBox(
+            height: 500,
+            child: ListView.builder(
+              itemCount: _listItems.length,
+              itemBuilder: (context, index) {
+                return Dismissible(
+                  background: stackBehindDismiss(),
+                  key: ObjectKey(_listItems[index]),
+                  child: Container(
+                    padding: EdgeInsets.all(20.0),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          color: Colors.black12,
+                          width: 1.0,
+                        ),
+                      ),
+                    ),
+                    child: Row(
+                      children: <Widget>[
+                        Text(
+                          _listItems[index],
+                          style: TextStyle(
+                            fontWeight: FontWeight.normal,
+                            fontSize: 22,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  onDismissed: (direction) {
+                    var item = _listItems.elementAt(index);
+                    //To delete
+                    deleteItem(index);
+                    //To show a snackbar with the UNDO button
+                    Scaffold.of(context).showSnackBar(SnackBar(
+                        content: Text("Item deleted"),
+                        action: SnackBarAction(
+                            label: "UNDO",
+                            onPressed: () {
+                              //To undo deletion
+                              undoDeletion(index, item);
+                            })));
+                  },
+                );
+              },
+            ),
           ),
         ],
       ),
 
       floatingActionButton: FloatingActionButton(
-        onPressed: _addlistItems,
-        tooltip: 'Add item',
-        child: Icon(Icons.add),
+        onPressed: _resetlistItems,
+        tooltip: 'Reset',
+        child: Icon(Icons.delete_sweep),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }

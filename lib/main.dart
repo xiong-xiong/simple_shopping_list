@@ -94,7 +94,7 @@ class _HomeState extends State<Home> {
                   ],
                 ),
               ),
-              child: const Text('Add item to list',
+              child: const Text('Add items to list',
                   style: TextStyle(fontSize: 20)),
             ),
           ),
